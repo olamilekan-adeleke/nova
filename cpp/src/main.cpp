@@ -1,1 +1,8 @@
-int main() { return 0; }
+#include "repl/repl.cpp"
+
+int main() {
+  REPL repl;
+  repl.run();
+
+  return 0;
+}
