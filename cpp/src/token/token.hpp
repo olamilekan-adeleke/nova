@@ -52,7 +52,7 @@ struct Token {
 
   Token(TokenType t, const std::string &lit) : type(t), literal(lit) {}
 
-  std::string tokenTypeToString(TokenType type); // TODO: Test
+  static std::string tokenTypeToString(TokenType type); // TODO: Test
 
   static TokenType lookUpIndent(const std::string ident); // TODO: Test
 
