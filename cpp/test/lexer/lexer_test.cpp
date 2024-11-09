@@ -1,12 +1,9 @@
 #include "lexer/lexer.hpp"
 #include "token/token.hpp"
-#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdio>
 #include <gtest/gtest.h>
-#include <iostream>
-#include <ostream>
 #include <string>
 
 TEST(LexerText, TestSingleCharToken) {
