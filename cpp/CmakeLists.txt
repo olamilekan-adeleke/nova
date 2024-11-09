@@ -1,0 +1,62 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+cmake_minimum_required(VERSION 3.14)
+
+project(Nova VERSION 1.0)
+
+cmake_policy(SET CMP0135 NEW)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/b514bdc898e2951020cbdca1304b75f5950d1f59.zip
+)
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+
+# Recursively find all .cpp and .hpp files in the project
+file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/*.cpp" "${PROJECT_SOURCE_DIR}/*.hpp")
+
+# Exclude CMake's internal files from being included in the executable
+list(FILTER SOURCES EXCLUDE REGEX "/CMakeFiles/|hello_test.cpp|/test/")
+
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_executable(Token ${SOURCES})
+target_compile_options(Token PRIVATE -Wall -Wextra)
+
+
+
+enable_testing()
+
+file(GLOB_RECURSE TEST_SOURCES "${PROJECT_SOURCE_DIR}/test/*.cpp")
+
+
+add_library(nova_lib
+  ${SOURCES}
+)
+target_include_directories(nova_lib PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_executable(
+  nova_test
+  ${TEST_SOURCES}
+)
+target_link_libraries(nova_test PRIVATE 
+    nova_lib
+    GTest::gtest_main
+    GTest::gtest
+)
+
+include(GoogleTest)
+#gtest_discover_tests(nova_test)
+gtest_discover_tests(nova_test DISCOVERY_MODE PRE_TEST)
+
+
