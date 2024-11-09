@@ -1,5 +1,6 @@
 #include "lexer.hpp"
 #include "token/token.hpp"
+#include <iostream>
 #include <string>
 #include <sys/fcntl.h>
 
@@ -31,7 +32,19 @@ Token Lexer::nextToken() {
 
   switch (ch) {
   case '=':
-    return createToken(TokenType::ASSIGN, std::string(1, ch));
+    if (peekChar() == '=') {
+      std::cout << "Peak Value is: " << std::string(1, ch) << std::endl;
+      const auto curr_ch = ch;
+      readChar();
+
+      const Token token = Token(TokenType::EQUALS,
+                                std::string(1, curr_ch) + std::string(1, ch));
+
+      readChar(); // This is to skip the inner value we picked into
+      return token;
+    } else {
+      return createToken(TokenType::ASSIGN, std::string(1, ch));
+    }
 
   case ';':
     return createToken(TokenType::SEMICOLON, std::string(1, ch));
@@ -47,6 +60,34 @@ Token Lexer::nextToken() {
 
   case '+':
     return createToken(TokenType::PLUS, std::string(1, ch));
+
+  case '-':
+    return createToken(TokenType::MINUS, std::string(1, ch));
+
+  case '!':
+    if (peekChar() == '=') {
+      const auto curr_ch = ch;
+      readChar();
+      const Token token = Token(TokenType::NOT_EQUALS,
+                                std::string(1, curr_ch) + std::string(1, ch));
+
+      readChar(); // This is to skip the inner value we picked into
+      return token;
+    } else {
+      return createToken(TokenType::BANG, std::string(1, ch));
+    }
+
+  case '/':
+    return createToken(TokenType::SLASH, std::string(1, ch));
+
+  case '*':
+    return createToken(TokenType::ASTERISK, std::string(1, ch));
+
+  case '<':
+    return createToken(TokenType::LESSTHAN, std::string(1, ch));
+
+  case '>':
+    return createToken(TokenType::GREATERTHAN, std::string(1, ch));
 
   case '{':
     return createToken(TokenType::L_BRACE, std::string(1, ch));
@@ -117,5 +158,13 @@ std::string Lexer::readNumber() {
 void Lexer::eatWhiteSpace() {
   while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
     readChar();
+  }
+}
+
+unsigned char Lexer::peekChar() {
+  if (readPosition >= input.size()) {
+    return 0;
+  } else {
+    return input[readPosition];
   }
 }

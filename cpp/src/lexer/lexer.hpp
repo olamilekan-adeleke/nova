@@ -32,6 +32,8 @@ private:
   std::string readNumber();
 
   void eatWhiteSpace();
+
+  unsigned char peekChar();
 };
 
 #endif // LEXER_HPP

@@ -43,32 +43,101 @@ x + y;
 };
 
 let result = add(five, ten);
+!-/*5;
+5 < 10 > 5;
+
+if (5 < 10) {
+  return true;
+} else {
+  return false;
+}
+
+11 == 11;
+13 != 9;
   )""";
 
-  std::array<Token, 36> expected_tokens = {
-      // std::array<Token, 5> expected_tokens = {
-      Token(TokenType::LET, "let"),         Token(TokenType::INDENT, "five"),
-      Token(TokenType::ASSIGN, "="),        Token(TokenType::INTEGER, "5"),
+  std::array<Token, 69> expected_tokens = {
+      Token(TokenType::LET, "let"),
+      Token(TokenType::INDENT, "five"),
+      Token(TokenType::ASSIGN, "="),
+      Token(TokenType::INTEGER, "5"),
       Token(TokenType::SEMICOLON, ";"),
 
-      Token(TokenType::LET, "let"),         Token(TokenType::INDENT, "ten"),
-      Token(TokenType::ASSIGN, "="),        Token(TokenType::INTEGER, "10"),
+      Token(TokenType::LET, "let"),
+      Token(TokenType::INDENT, "ten"),
+      Token(TokenType::ASSIGN, "="),
+      Token(TokenType::INTEGER, "10"),
       Token(TokenType::SEMICOLON, ";"),
 
-      Token(TokenType::LET, "let"),         Token(TokenType::INDENT, "add"),
-      Token(TokenType::ASSIGN, "="),        Token(TokenType::FUNCTION, "fn"),
-      Token(TokenType::L_PARENTHESIS, "("), Token(TokenType::INDENT, "x"),
-      Token(TokenType::COMMA, ","),         Token(TokenType::INDENT, "y"),
-      Token(TokenType::R_PARENTHESIS, ")"), Token(TokenType::L_BRACE, "{"),
-      Token(TokenType::INDENT, "x"),        Token(TokenType::PLUS, "+"),
-      Token(TokenType::INDENT, "y"),        Token(TokenType::SEMICOLON, ";"),
-      Token(TokenType::R_BRACE, "}"),       Token(TokenType::SEMICOLON, ";"),
+      Token(TokenType::LET, "let"),
+      Token(TokenType::INDENT, "add"),
+      Token(TokenType::ASSIGN, "="),
+      Token(TokenType::FUNCTION, "fn"),
+      Token(TokenType::L_PARENTHESIS, "("),
+      Token(TokenType::INDENT, "x"),
+      Token(TokenType::COMMA, ","),
+      Token(TokenType::INDENT, "y"),
+      Token(TokenType::R_PARENTHESIS, ")"),
+      Token(TokenType::L_BRACE, "{"),
+      Token(TokenType::INDENT, "x"),
+      Token(TokenType::PLUS, "+"),
+      Token(TokenType::INDENT, "y"),
+      Token(TokenType::SEMICOLON, ";"),
+      Token(TokenType::R_BRACE, "}"),
+      Token(TokenType::SEMICOLON, ";"),
 
-      Token(TokenType::LET, "let"),         Token(TokenType::INDENT, "result"),
-      Token(TokenType::ASSIGN, "="),        Token(TokenType::INDENT, "add"),
-      Token(TokenType::L_PARENTHESIS, "("), Token(TokenType::INDENT, "five"),
-      Token(TokenType::COMMA, ","),         Token(TokenType::INDENT, "ten"),
-      Token(TokenType::R_PARENTHESIS, ")"), Token(TokenType::SEMICOLON, ";"),
+      Token(TokenType::LET, "let"),
+      Token(TokenType::INDENT, "result"),
+      Token(TokenType::ASSIGN, "="),
+      Token(TokenType::INDENT, "add"),
+      Token(TokenType::L_PARENTHESIS, "("),
+      Token(TokenType::INDENT, "five"),
+      Token(TokenType::COMMA, ","),
+      Token(TokenType::INDENT, "ten"),
+      Token(TokenType::R_PARENTHESIS, ")"),
+      Token(TokenType::SEMICOLON, ";"),
+
+      Token(TokenType::BANG, "!"),
+      Token(TokenType::MINUS, "-"),
+      Token(TokenType::SLASH, "/"),
+      Token(TokenType::ASTERISK, "*"),
+      Token(TokenType::INTEGER, "5"),
+      Token(TokenType::SEMICOLON, ";"),
+
+      Token(TokenType::INTEGER, "5"),
+      Token(TokenType::LESSTHAN, "<"),
+      Token(TokenType::INTEGER, "10"),
+      Token(TokenType::GREATERTHAN, ">"),
+      Token(TokenType::INTEGER, "5"),
+      Token(TokenType::SEMICOLON, ";"),
+
+      Token(TokenType::IF, "if"),
+      Token(TokenType::L_PARENTHESIS, "("),
+      Token(TokenType::INTEGER, "5"),
+      Token(TokenType::LESSTHAN, "<"),
+      Token(TokenType::INTEGER, "10"),
+      Token(TokenType::R_PARENTHESIS, ")"),
+      Token(TokenType::L_BRACE, "{"),
+      Token(TokenType::RETURN, "return"),
+      Token(TokenType::TRUE, "true"),
+      Token(TokenType::SEMICOLON, ";"),
+      Token(TokenType::R_BRACE, "}"),
+      Token(TokenType::ELSE, "else"),
+      Token(TokenType::L_BRACE, "{"),
+      Token(TokenType::RETURN, "return"),
+      Token(TokenType::FALSE, "false"),
+      Token(TokenType::SEMICOLON, ";"),
+      Token(TokenType::R_BRACE, "}"),
+
+      Token(TokenType::INTEGER, "11"),
+      Token(TokenType::EQUALS, "=="),
+      Token(TokenType::INTEGER, "11"),
+      Token(TokenType::SEMICOLON, ";"),
+
+      // Token(TokenType::INTEGER, "13"),
+      // Token(TokenType::NOT_EQUALS, "!="),
+      // Token(TokenType::INTEGER, "9"),
+      // Token(TokenType::SEMICOLON, ";"),
   };
 
   Lexer *lexer = Lexer::New(input);

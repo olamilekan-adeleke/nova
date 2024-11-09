@@ -15,6 +15,17 @@ enum class TokenType {
   // Operators
   ASSIGN,
   PLUS,
+  MINUS,
+  BANG,
+  ASTERISK,
+  SLASH,
+
+  // Equlity
+  LESSTHAN,
+  GREATERTHAN,
+
+  EQUALS,
+  NOT_EQUALS,
 
   // Delimiters
   COMMA,
@@ -28,7 +39,11 @@ enum class TokenType {
   // Lang Keyword
   LET,
   FUNCTION,
-
+  TRUE,
+  FALSE,
+  IF,
+  ELSE,
+  RETURN
 };
 
 struct Token {

@@ -3,36 +3,42 @@
 #include <string>
 
 std::string Token::tokenTypeToString(TokenType type) {
-  if (type == TokenType::ILLEGAL)
-    return "ILLEGAL";
-  else if (type == TokenType::EOF_)
-    return "EOF";
-  else if (type == TokenType::INDENT)
-    return "IDENT";
-  else if (type == TokenType::INTEGER)
-    return "INT";
-  else if (type == TokenType::ASSIGN)
-    return "=";
-  else if (type == TokenType::PLUS)
-    return "+";
-  else if (type == TokenType::COMMA)
-    return ",";
-  else if (type == TokenType::SEMICOLON)
-    return ";";
-  else if (type == TokenType::L_PARENTHESIS)
-    return "(";
-  else if (type == TokenType::R_PARENTHESIS)
-    return ")";
-  else if (type == TokenType::L_BRACE)
-    return "{";
-  else if (type == TokenType::R_BRACE)
-    return "}";
-  else if (type == TokenType::FUNCTION)
-    return "FUNCTION";
-  else if (type == TokenType::LET)
-    return "LET";
-  else
+  static const std::unordered_map<TokenType, std::string> tokenTypeMap = {
+      {TokenType::ILLEGAL, "ILLEGAL"},
+      {TokenType::EOF_, "EOF"},
+      {TokenType::INDENT, "IDENT"},
+      {TokenType::INTEGER, "INT"},
+      {TokenType::ASSIGN, "="},
+      {TokenType::PLUS, "+"},
+      {TokenType::MINUS, "-"},
+      {TokenType::BANG, "!"},
+      {TokenType::ASTERISK, "*"},
+      {TokenType::SLASH, "/"},
+      {TokenType::LESSTHAN, "<"},
+      {TokenType::GREATERTHAN, ">"},
+      {TokenType::COMMA, ","},
+      {TokenType::SEMICOLON, ";"},
+      {TokenType::L_PARENTHESIS, "("},
+      {TokenType::R_PARENTHESIS, ")"},
+      {TokenType::L_BRACE, "{"},
+      {TokenType::R_BRACE, "}"},
+      {TokenType::LET, "LET"},
+      {TokenType::FUNCTION, "FUNCTION"},
+      {TokenType::TRUE, "TRUE"},
+      {TokenType::FALSE, "FALSE"},
+      {TokenType::IF, "IF"},
+      {TokenType::ELSE, "ELSE"},
+      {TokenType::RETURN, "RETURN"},
+      {TokenType::EQUALS, "EQUAL"},
+      {TokenType::NOT_EQUALS, "NOT_EQUAL"},
+  };
+
+  const auto it = tokenTypeMap.find(type);
+  if (it != tokenTypeMap.end()) {
+    return it->second;
+  } else {
     return "UNKNOWN";
+  }
 }
 
 TokenType Token::lookUpIndent(const std::string indent) {
@@ -47,6 +53,8 @@ TokenType Token::lookUpIndent(const std::string indent) {
 // Private
 //
 std::map<std::string, TokenType> Token::keywords = {
-    {"fn", TokenType::FUNCTION},
-    {"let", TokenType::LET},
+    {"fn", TokenType::FUNCTION},   {"let", TokenType::LET},
+    {"true", TokenType::TRUE},     {"false", TokenType::FALSE},
+    {"if", TokenType::IF},         {"else", TokenType::ELSE},
+    {"return", TokenType::RETURN},
 };
