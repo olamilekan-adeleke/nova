@@ -34,9 +34,9 @@ struct Token {
   TokenType type;
   std::string literal;
 
-  Token(TokenType t, std::string &lit) : type(t), literal(lit) {}
-};
+  Token(TokenType t, const std::string &lit) : type(t), literal(lit) {}
 
-std::string tokenTypeToString(TokenType type);
+  std::string tokenTypeToString(TokenType type);
+};
 
 #endif
