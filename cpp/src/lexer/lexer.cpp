@@ -1,5 +1,5 @@
 #include "lexer.hpp"
-#include "src/token/token.hpp"
+#include "token/token.hpp"
 #include <string>
 #include <sys/fcntl.h>
 
@@ -27,43 +27,95 @@ void Lexer::readChar() {
 
 Token Lexer::nextToken() {
 
+  eatWhiteSpace();
+
   switch (ch) {
   case '=':
-    return createToken(TokenType::ASSIGN, ch);
+    return createToken(TokenType::ASSIGN, std::string(1, ch));
 
   case ';':
-    return createToken(TokenType::SEMICOLON, ch);
+    return createToken(TokenType::SEMICOLON, std::string(1, ch));
 
   case '(':
-    return createToken(TokenType::L_PARENTHESIS, ch);
+    return createToken(TokenType::L_PARENTHESIS, std::string(1, ch));
 
   case ')':
-    return createToken(TokenType::R_PARENTHESIS, ch);
+    return createToken(TokenType::R_PARENTHESIS, std::string(1, ch));
 
   case ',':
-    return createToken(TokenType::COMMA, ch);
+    return createToken(TokenType::COMMA, std::string(1, ch));
 
   case '+':
-    return createToken(TokenType::PLUS, ch);
+    return createToken(TokenType::PLUS, std::string(1, ch));
 
   case '{':
-    return createToken(TokenType::L_BRACE, ch);
+    return createToken(TokenType::L_BRACE, std::string(1, ch));
 
   case '}':
-    return createToken(TokenType::R_BRACE, ch);
+    return createToken(TokenType::R_BRACE, std::string(1, ch));
 
   case 0:
-    return createToken(TokenType::EOF_, ch);
+    return createToken(TokenType::EOF_, std::string(1, ch));
 
   default:
-    return createToken(TokenType::ILLEGAL, ch);
+    if (isLetter(ch)) {
+      const std::string literal = readIndentifier();
+      const TokenType type = Token::lookUpIndent(literal);
+
+      // We are not using the createToken function here becase "readNumber()"
+      // already call "readChar()" using the "createToken()" function will call
+      // "readChar()" twice and cause use to skip two value.
+      // This is a issues when you you have an example like this "let five = 5;"
+      // especailly at "5;", skiping two char will cause invaild persing
+      return Token(type, literal);
+    } else if (isDigit(ch)) {
+      const std::string literal = readNumber();
+
+      return Token(TokenType::INTEGER, literal);
+    } else {
+
+      return createToken(TokenType::ILLEGAL, std::string(1, ch));
+    }
   }
 }
 
 // Private Methods
 
-Token Lexer::createToken(TokenType type, unsigned char ch) {
-  Token token(type, std::string(1, ch));
+Token Lexer::createToken(TokenType type, const std::string &value) {
+  Token token(type, value);
   readChar();
   return token;
+}
+
+bool Lexer::isLetter(unsigned char ch) {
+  return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch == '_';
+}
+
+bool Lexer::isDigit(unsigned char ch) {
+  //
+  return '0' <= ch && ch <= '9';
+}
+
+std::string Lexer::readIndentifier() {
+  const size_t start_position = position;
+  while (isLetter(ch)) {
+    readChar();
+  }
+
+  return input.substr(start_position, position - start_position);
+}
+
+std::string Lexer::readNumber() {
+  const size_t start_position = position;
+  while (isDigit(ch)) {
+    readChar();
+  }
+
+  return input.substr(start_position, position - start_position);
+}
+
+void Lexer::eatWhiteSpace() {
+  while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
+    readChar();
+  }
 }

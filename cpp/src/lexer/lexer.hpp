@@ -2,14 +2,14 @@
 #ifndef LEXER_HPP
 #define LEXER_HPP
 
-#include "src/token/token.hpp"
+#include "token/token.hpp"
 #include <string>
 #include <sys/stat.h>
 
 struct Lexer {
   std::string input;
-  unsigned int position;
-  unsigned int readPosition;
+  size_t position;
+  size_t readPosition;
   unsigned char ch;
 
   Lexer(const std::string &inp);
@@ -21,7 +21,17 @@ struct Lexer {
   Token nextToken();
 
 private:
-  Token createToken(TokenType type, unsigned char ch);
+  Token createToken(TokenType type, const std::string &input);
+
+  bool isLetter(unsigned char ch);
+
+  bool isDigit(unsigned char ch);
+
+  std::string readIndentifier();
+
+  std::string readNumber();
+
+  void eatWhiteSpace();
 };
 
 #endif // LEXER_HPP

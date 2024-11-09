@@ -1,6 +1,7 @@
 #ifndef TOKEN_HPP
 #define TOKEN_HPP
 
+#include <map>
 #include <string>
 
 enum class TokenType {
@@ -36,7 +37,12 @@ struct Token {
 
   Token(TokenType t, const std::string &lit) : type(t), literal(lit) {}
 
-  std::string tokenTypeToString(TokenType type);
+  std::string tokenTypeToString(TokenType type); // TODO: Test
+
+  static TokenType lookUpIndent(const std::string ident); // TODO: Test
+
+private:
+  static std::map<std::string, TokenType> keywords; // TODO: Test
 };
 
 #endif

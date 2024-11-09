@@ -1,6 +1,8 @@
 #include "token.hpp"
+#include <map>
+#include <string>
 
-std::string tokenTypeToString(TokenType type) {
+std::string Token::tokenTypeToString(TokenType type) {
   if (type == TokenType::ILLEGAL)
     return "ILLEGAL";
   else if (type == TokenType::EOF_)
@@ -32,3 +34,19 @@ std::string tokenTypeToString(TokenType type) {
   else
     return "UNKNOWN";
 }
+
+TokenType Token::lookUpIndent(const std::string indent) {
+  const auto it = keywords.find(indent);
+  if (it != keywords.end()) {
+    return it->second;
+  }
+
+  return TokenType::INDENT;
+}
+
+// Private
+//
+std::map<std::string, TokenType> Token::keywords = {
+    {"fn", TokenType::FUNCTION},
+    {"let", TokenType::LET},
+};
